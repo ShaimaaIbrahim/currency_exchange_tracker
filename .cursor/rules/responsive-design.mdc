@@ -1,0 +1,110 @@
+# Responsive Design Rules
+
+These rules are **non-negotiable** for every UI change in this project.
+They exist because the assessment is graded as a product, and a layout that
+only works on one phone size is not a product.
+
+## Size classes (never platforms)
+
+- Branch on **width**, never on `Platform.isIOS`, `Platform.isAndroid`, or
+  device model. Split-screen, foldables, desktop windows and browser resize
+  all change width without changing platform.
+- Use the four Material 3 window size classes from
+  `lib/core/responsive/app_breakpoints.dart`:
+
+  | Class     | Width (dp)   | Typical device              |
+  |-----------|--------------|-----------------------------|
+  | compact   | `< 600`      | Phone portrait              |
+  | medium    | `600–1023`   | Phone landscape / small tab |
+  | expanded  | `1024–1439`  | Tablet landscape / laptop  |
+  | large     | `≥ 1440`     | Desktop / TV                |
+
+- Prefer `context.windowSize` / `context.responsive(...)` /
+  `ResponsiveBuilder` from `lib/core/responsive/`. Do **not** invent local
+  breakpoint constants.
+
+## Measure the parent, not the window
+
+- When a widget can appear inside a pane, dialog, side sheet or grid cell,
+  measure with `LayoutBuilder` / `ResponsiveBuilder`. A 380dp detail pane on
+  a desktop must lay out like a phone.
+- `MediaQuery.sizeOf(context)` is fine for page-level decisions
+  (how many grid columns, whether to show a side-by-side detail). It is the
+  wrong tool for anything that can be nested.
+
+## Cap content width
+
+- Every page body must go through `ResponsiveCenter` (or
+  `ResponsiveSliverCenter` inside a `CustomScrollView`).
+- Default max width is `AppBreakpoints.maxContentWidth` (720). Use
+  `maxWideContentWidth` (1080) only for charts and multi-column grids.
+- Never let a list row stretch to the full width of a 27" monitor.
+
+## Spacing and touch
+
+- Use `AppSpacing` tokens (`xxs`…`xxxl`). No magic numbers for padding,
+  gaps or radii.
+- Every interactive target must be at least
+  `AppBreakpoints.minTouchTarget` (48dp) on every side. Prefer
+  `IconButton` / `ListTile` / `InkWell` over raw `GestureDetector` on a
+  small child.
+- On short viewports (`context.isShortViewport`, height < 480) drop
+  decorative vertical space rather than let content overflow. `Gap` already
+  shrinks itself by 25% in that case.
+
+## Text and overflow
+
+- Never assume a string fits. Use `maxLines` + `TextOverflow.ellipsis`, or
+  wrap the critical number in a `FittedBox(fit: BoxFit.scaleDown)`.
+- Respect the user's text scale. Do not hard-code `textScaler:
+  TextScaler.noScaling` except for emoji / icon glyphs that must stay inside
+  a fixed circle.
+- The app clamps text scale to `0.85…1.6` in `CurrencyExchangeApp` — do not
+  lower the ceiling further without a documented reason.
+- Prefer `Wrap` over `Row` when children can overflow horizontally
+  (badges, chips, meta rows).
+
+## Lists vs grids
+
+- Phone (`compact`): single-column list.
+- Tablet and up: `SliverGrid` with `context.gridColumns` (2 / 3).
+- Grid cells must use **`mainAxisExtent`** (fixed height), never
+  `childAspectRatio`. Aspect ratios clip the moment the user scales text up.
+- If a card can stack its identity + figures (narrow cell), the
+  `mainAxisExtent` must be tall enough for the stacked layout.
+
+## Orientation and keyboard
+
+- Do not lock orientation. Landscape must work.
+- Forms (none today) must scroll when the keyboard opens —
+  `resizeToAvoidBottomInset: true` on the `Scaffold`.
+
+## Loading, empty, error
+
+- Loading placeholders must reserve the **same space** as the real content
+  (shimmer skeletons). A spinner that collapses to a dot and then jumps is
+  not acceptable — especially for the chart, where the spec requires shimmer.
+- Error and empty states must still be pull-to-refreshable
+  (`AlwaysScrollableScrollPhysics` on the host scroll view).
+- Offline is a first-class state: show the cached data **and** an
+  `OfflineNotice` with a relative timestamp. Never silently show stale
+  numbers as if they were live.
+
+## Accessibility
+
+- Colour is never the only signal. Rate trends carry an arrow icon, a `+`/`−`
+  sign **and** a `Semantics` label — green/red alone is not enough.
+- Hit targets, contrast and text scale are part of responsive design, not a
+  separate checklist.
+
+## Checklist before opening a PR that touches UI
+
+- [ ] Runs without overflow on a 320dp-wide phone
+- [ ] Runs without overflow at text scale 1.6
+- [ ] Looks intentional on a 1024dp tablet (grid or side-by-side, not a
+      stretched phone layout)
+- [ ] Content is capped by `ResponsiveCenter` / `ResponsiveSliverCenter`
+- [ ] Loading state is a shimmer skeleton, not a bare spinner
+- [ ] Error / empty / offline states are handled and still refreshable
+- [ ] No new magic spacing numbers — used `AppSpacing`
+- [ ] No `Platform.isX` checks for layout
