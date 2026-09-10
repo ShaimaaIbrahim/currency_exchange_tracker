@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
@@ -56,7 +57,7 @@ class RateSummaryCard extends StatelessWidget {
             ),
             const Gap(AppSpacing.xl),
             Text(
-              'Current rate',
+              AppStrings.currentRate,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -83,7 +84,10 @@ class RateSummaryCard extends StatelessWidget {
               children: [
                 RateChangeBadge(rate: rate),
                 Text(
-                  _changeWindowLabel(),
+                  AppStrings.changeWindowLabel(
+                    asOf: rate.asOf,
+                    previous: rate.previousAsOf,
+                  ),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -93,16 +97,16 @@ class RateSummaryCard extends StatelessWidget {
             const Gap(AppSpacing.lg),
             const Divider(),
             const Gap(AppSpacing.md),
-            _MetaRow(
+            RateSummaryMetaRow(
               icon: Icons.event_available_rounded,
-              label: 'Last updated',
+              label: AppStrings.lastUpdated,
               value: rate.asOf.toMediumDate(),
             ),
             if (rate.previousAsOf case final previous?) ...[
               const Gap(AppSpacing.sm),
-              _MetaRow(
+              RateSummaryMetaRow(
                 icon: Icons.history_rounded,
-                label: 'Compared with',
+                label: AppStrings.comparedWith,
                 value: previous.toMediumDate(),
               ),
             ],
@@ -111,23 +115,14 @@ class RateSummaryCard extends StatelessWidget {
       ),
     );
   }
-
-  /// The comparison snapshot is usually yesterday, but the feed skips days —
-  /// so the label says what was actually compared instead of assuming.
-  String _changeWindowLabel() {
-    final previous = rate.previousAsOf;
-    if (previous == null) return 'vs. previous close';
-    final days = rate.asOf.difference(previous).inDays;
-    if (days <= 1) return 'vs. yesterday';
-    return 'vs. $days days ago';
-  }
 }
 
-class _MetaRow extends StatelessWidget {
-  const _MetaRow({
+class RateSummaryMetaRow extends StatelessWidget {
+  const RateSummaryMetaRow({
     required this.icon,
     required this.label,
     required this.value,
+    super.key,
   });
 
   final IconData icon;

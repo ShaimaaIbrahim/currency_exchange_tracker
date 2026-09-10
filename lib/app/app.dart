@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/di/injector.dart';
 import 'package:currency_exchange_tracker/core/router/app_router.dart';
 import 'package:currency_exchange_tracker/core/theme/app_theme.dart';
@@ -35,7 +36,7 @@ class _CurrencyExchangeAppState extends State<CurrencyExchangeApp> {
         ),
       ],
       child: MaterialApp.router(
-        title: 'Currency Exchange Tracker',
+        title: AppStrings.appTitle,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),

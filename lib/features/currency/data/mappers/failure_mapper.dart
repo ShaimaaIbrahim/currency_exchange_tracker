@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/error/exceptions.dart';
 import 'package:currency_exchange_tracker/core/error/failures.dart';
 
@@ -28,7 +29,7 @@ abstract final class FailureMapper {
       // Cancellation is a normal consequence of navigating away. It should
       // never be rendered, but a failure is still needed to close the future.
       RequestCancelledException() => const NoDataFailure(
-        message: 'The request was cancelled.',
+        message: AppStrings.requestCancelled,
       ),
     };
   }

@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/error/failures.dart';
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
@@ -36,18 +37,20 @@ class AppMessageView extends StatelessWidget {
         UnexpectedFailure() => Icons.error_outline_rounded,
       },
       title: switch (failure) {
-        OfflineFailure() => "You're offline",
-        TimeoutFailure() => 'Connection timed out',
-        ConnectionFailure() => "Can't reach the service",
-        ServerFailure() => 'Service unavailable',
-        NoDataFailure() => 'No data available',
-        CacheFailure() => 'Saved data unavailable',
-        ParsingFailure() => 'Unexpected response',
-        RequestFailure() => 'Something went wrong',
-        UnexpectedFailure() => 'Something went wrong',
+        OfflineFailure() => AppStrings.failureOfflineTitle,
+        TimeoutFailure() => AppStrings.failureTimeoutTitle,
+        ConnectionFailure() => AppStrings.failureConnectionTitle,
+        ServerFailure() => AppStrings.failureServerTitle,
+        NoDataFailure() => AppStrings.failureNoDataTitle,
+        CacheFailure() => AppStrings.failureCacheTitle,
+        ParsingFailure() => AppStrings.failureParsingTitle,
+        RequestFailure() => AppStrings.failureGenericTitle,
+        UnexpectedFailure() => AppStrings.failureGenericTitle,
       },
       message: failure.message,
-      actionLabel: failure.isRetryable && onRetry != null ? 'Try again' : null,
+      actionLabel: failure.isRetryable && onRetry != null
+          ? AppStrings.tryAgain
+          : null,
       onAction: failure.isRetryable ? onRetry : null,
     );
   }
@@ -126,11 +129,9 @@ class AppEmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppMessageView(
       icon: Icons.currency_exchange_rounded,
-      title: 'No rates to show',
-      message:
-          'The exchange-rate feed returned no rates for the currencies '
-          'we track. Pull down to try again.',
-      actionLabel: onRefresh == null ? null : 'Refresh',
+      title: AppStrings.emptyRatesTitle,
+      message: AppStrings.emptyRatesMessage,
+      actionLabel: onRefresh == null ? null : AppStrings.refresh,
       onAction: onRefresh,
     );
   }

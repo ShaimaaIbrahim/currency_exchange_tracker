@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
@@ -52,8 +53,8 @@ class OfflineNotice extends StatelessWidget {
               children: [
                 Text(
                   isOffline
-                      ? 'Offline — showing saved rates'
-                      : 'Showing saved rates',
+                      ? AppStrings.offlineShowingSaved
+                      : AppStrings.showingSavedRates,
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: colors.offlineForeground,
                     fontWeight: FontWeight.w700,
@@ -75,16 +76,11 @@ class OfflineNotice extends StatelessWidget {
   }
 
   String _subtitle(bool isStale) {
-    final age = board.retrievedAt.toRelativeLabel();
-    final prefix = 'Last updated $age';
-    if (isOffline) {
-      return isStale
-          ? "$prefix. These rates may be well out of date — we'll refresh as "
-                'soon as you reconnect.'
-          : "$prefix. We'll refresh automatically when you reconnect.";
-    }
-    return "$prefix. We couldn't reach the service, so these are the last "
-        'rates we saved.';
+    return AppStrings.offlineSubtitle(
+      relative: board.retrievedAt.toRelativeLabel(),
+      isOffline: isOffline,
+      isStale: isStale,
+    );
   }
 }
 
@@ -96,7 +92,7 @@ class OfflineChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.semanticColors;
     return Semantics(
-      label: 'Device is offline',
+      label: AppStrings.deviceOfflineLabel,
       child: Container(
         decoration: BoxDecoration(
           color: colors.offlineBackground,
@@ -116,7 +112,7 @@ class OfflineChip extends StatelessWidget {
             ),
             const Gap.horizontal(AppSpacing.xs),
             Text(
-              'Offline',
+              AppStrings.offlineChip,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: colors.offlineForeground,
                 fontWeight: FontWeight.w700,

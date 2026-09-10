@@ -1,4 +1,5 @@
 import 'package:currency_exchange_tracker/core/constants/app_constants.dart';
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/error/exceptions.dart';
 import 'package:currency_exchange_tracker/core/error/failures.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
@@ -102,9 +103,7 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
         currency: currency,
         days: days,
         fallbackFailure: const NoDataFailure(
-          message:
-              'No exchange-rate history is available for the last '
-              '7 days. Please try again later.',
+          message: AppStrings.historyUnavailable,
         ),
       );
     }
@@ -120,9 +119,7 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
     if (history.isEmpty) {
       return Err(
         NoDataFailure(
-          message:
-              'The feed did not publish ${currency.code} rates for this '
-              'period.',
+          message: AppStrings.historyMissingCurrency(currency.code),
         ),
       );
     }

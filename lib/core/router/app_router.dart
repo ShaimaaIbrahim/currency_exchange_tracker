@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/di/injector.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/currency.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/bloc/rate_history/rate_history_bloc.dart';
@@ -41,7 +42,7 @@ abstract final class AppRouter {
 
                 if (currency == null) {
                   return RouteNotFoundPage(
-                    message: 'We do not track "$code" yet.',
+                    message: AppStrings.untrackedCurrency(code),
                   );
                 }
 
@@ -59,7 +60,7 @@ abstract final class AppRouter {
         ),
       ],
       errorBuilder: (context, state) =>
-          RouteNotFoundPage(message: 'We could not find "${state.uri}".'),
+          RouteNotFoundPage(message: AppStrings.unknownRoute('${state.uri}')),
     );
   }
 }

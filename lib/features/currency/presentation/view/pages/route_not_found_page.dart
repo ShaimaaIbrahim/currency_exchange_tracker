@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/router/app_router.dart';
 import 'package:currency_exchange_tracker/core/widgets/app_state_views.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +16,12 @@ class RouteNotFoundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Not found')),
+      appBar: AppBar(title: const Text(AppStrings.notFoundAppBar)),
       body: AppMessageView(
         icon: Icons.travel_explore_rounded,
-        title: 'Page not found',
+        title: AppStrings.pageNotFoundTitle,
         message: message,
-        actionLabel: 'Back to rates',
+        actionLabel: AppStrings.backToRates,
         onAction: () => context.go(AppRoutes.rates),
       ),
     );

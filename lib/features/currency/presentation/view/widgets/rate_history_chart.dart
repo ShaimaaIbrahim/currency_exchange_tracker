@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
@@ -128,7 +129,7 @@ class RateHistoryChart extends StatelessWidget {
               getTooltipItems: (touchedSpots) => touchedSpots.map((spot) {
                 final point = history.points[spot.x.round()];
                 return LineTooltipItem(
-                  '${RateFormatter.rate(point.egpPerUnit)} EGP\n',
+                  '${AppStrings.chartTooltipRate(RateFormatter.rate(point.egpPerUnit))}\n',
                   theme.textTheme.labelMedium!.copyWith(
                     color: theme.colorScheme.onInverseSurface,
                     fontWeight: FontWeight.w700,
@@ -204,12 +205,14 @@ class RateHistoryChart extends StatelessWidget {
   String _semanticsSummary() {
     final first = history.first;
     final last = history.last;
-    return '${history.currency.displayName} rate chart. '
-        '${history.points.length} days. '
-        'From ${RateFormatter.rate(first.egpPerUnit)} EGP on '
-        '${first.date.toMediumDate()} '
-        'to ${RateFormatter.rate(last.egpPerUnit)} EGP on '
-        '${last.date.toMediumDate()}.';
+    return AppStrings.chartSemantics(
+      currencyName: history.currency.displayName,
+      days: history.points.length,
+      fromRate: RateFormatter.rate(first.egpPerUnit),
+      fromDate: first.date.toMediumDate(),
+      toRate: RateFormatter.rate(last.egpPerUnit),
+      toDate: last.date.toMediumDate(),
+    );
   }
 }
 

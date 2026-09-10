@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/error/failures.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/currency.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/rates_board.dart';
@@ -167,8 +168,8 @@ void main() {
 
       await pumpPage(tester);
 
-      expect(find.text("You're offline"), findsOneWidget);
-      expect(find.text('Try again'), findsOneWidget);
+      expect(find.text(AppStrings.failureOfflineTitle), findsOneWidget);
+      expect(find.text(AppStrings.tryAgain), findsOneWidget);
     });
 
     testWidgets('retry dispatches a refresh', (tester) async {
@@ -180,7 +181,7 @@ void main() {
       );
 
       await pumpPage(tester);
-      await tester.tap(find.text('Try again'));
+      await tester.tap(find.text(AppStrings.tryAgain));
 
       verify(() => ratesBloc.add(const ExchangeRatesRefreshRequested()))
           .called(1);
@@ -200,7 +201,7 @@ void main() {
 
       await pumpPage(tester);
 
-      expect(find.text('Try again'), findsNothing);
+      expect(find.text(AppStrings.tryAgain), findsNothing);
     });
   });
 
@@ -215,7 +216,7 @@ void main() {
 
       await pumpPage(tester);
 
-      expect(find.text('No rates to show'), findsOneWidget);
+      expect(find.text(AppStrings.emptyRatesTitle), findsOneWidget);
       expect(find.byType(Shimmer), findsNothing);
       expect(find.byType(RateCard), findsNothing);
     });
@@ -231,7 +232,7 @@ void main() {
       );
 
       await pumpPage(tester);
-      await tester.tap(find.byTooltip('Refresh rates'));
+      await tester.tap(find.byTooltip(AppStrings.refreshRatesTooltip));
       await tester.pump();
 
       verify(() => ratesBloc.add(const ExchangeRatesRefreshRequested()))

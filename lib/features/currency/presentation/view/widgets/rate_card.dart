@@ -1,6 +1,7 @@
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/utils/rate_formatter.dart';
+import 'package:currency_exchange_tracker/core/widgets/shimmer_box.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/currency_rate.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/view/widgets/currency_avatar.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/view/widgets/rate_change_badge.dart';
@@ -39,87 +40,27 @@ class RateCard extends StatelessWidget {
               final textScale = MediaQuery.textScalerOf(context).scale(14) / 14;
               final shouldStack = constraints.maxWidth < 340 || textScale > 1.3;
 
-              final identity = Row(
-                children: [
-                  CurrencyAvatar(
-                    currency: rate.currency,
-                    size: context.responsive<double>(compact: 42, medium: 48),
-                  ),
-                  const Gap.horizontal(AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          rate.currency.displayName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          rate.currency.pairLabel,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                            letterSpacing: 0.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-
-              final figures = Column(
-                crossAxisAlignment: shouldStack
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: shouldStack
-                        ? Alignment.centerLeft
-                        : Alignment.centerRight,
-                    child: Text(
-                      RateFormatter.rate(rate.egpPerUnit),
-                      maxLines: 1,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        // Tabular figures stop the numbers jittering horizontally
-                        // when a refresh changes a digit's width.
-                        fontFeatures: const [FontFeature.tabularFigures()],
-                      ),
-                      semanticsLabel: RateFormatter.pairSentence(
-                        rate.currency,
-                        rate.egpPerUnit,
-                      ),
-                    ),
-                  ),
-                  const Gap(AppSpacing.xs),
-                  RateChangeBadge(rate: rate, isCompact: true),
-                ],
-              );
-
               if (shouldStack) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: [identity, const Gap(AppSpacing.md), figures],
+                  children: [
+                    RateCardIdentity(rate: rate),
+                    const Gap(AppSpacing.md),
+                    RateCardFigures(rate: rate, alignStart: true),
+                  ],
                 );
               }
 
               return Row(
                 children: [
-                  Expanded(child: identity),
+                  Expanded(child: RateCardIdentity(rate: rate)),
                   const Gap.horizontal(AppSpacing.md),
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: constraints.maxWidth * 0.42,
                     ),
-                    child: figures,
+                    child: RateCardFigures(rate: rate, alignStart: false),
                   ),
                   const Gap.horizontal(AppSpacing.xs),
                   Icon(
@@ -132,6 +73,97 @@ class RateCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Flag, name and pair label.
+class RateCardIdentity extends StatelessWidget {
+  const RateCardIdentity({required this.rate, super.key});
+
+  final CurrencyRate rate;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        CurrencyAvatar(
+          currency: rate.currency,
+          size: context.responsive<double>(compact: 42, medium: 48),
+        ),
+        const Gap.horizontal(AppSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                rate.currency.displayName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                rate.currency.pairLabel,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  letterSpacing: 0.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Rate figure and daily-change badge.
+class RateCardFigures extends StatelessWidget {
+  const RateCardFigures({
+    required this.rate,
+    required this.alignStart,
+    super.key,
+  });
+
+  final CurrencyRate rate;
+  final bool alignStart;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: alignStart
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: alignStart ? Alignment.centerLeft : Alignment.centerRight,
+          child: Text(
+            RateFormatter.rate(rate.egpPerUnit),
+            maxLines: 1,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+              // Tabular figures stop the numbers jittering horizontally
+              // when a refresh changes a digit's width.
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+            semanticsLabel: RateFormatter.pairSentence(
+              rate.currency,
+              rate.egpPerUnit,
+            ),
+          ),
+        ),
+        const Gap(AppSpacing.xs),
+        RateChangeBadge(rate: rate, isCompact: true),
+      ],
     );
   }
 }
@@ -157,16 +189,16 @@ class RateCardSkeleton extends StatelessWidget {
           height: avatarSize,
           child: Row(
             children: [
-              _Box.circle(avatarSize),
+              ShimmerBox.circle(size: avatarSize),
               const Gap.horizontal(AppSpacing.md),
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _Box(width: 120, height: 15),
+                    ShimmerBox(width: 120, height: 15),
                     Gap(AppSpacing.sm),
-                    _Box(width: 64, height: 11),
+                    ShimmerBox(width: 64, height: 11),
                   ],
                 ),
               ),
@@ -174,41 +206,15 @@ class RateCardSkeleton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _Box(width: 76, height: 18),
+                  ShimmerBox(width: 76, height: 18),
                   Gap(AppSpacing.sm),
-                  _Box(width: 52, height: 11),
+                  ShimmerBox(width: 52, height: 11),
                 ],
               ),
               const Gap.horizontal(AppSpacing.lg),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _Box extends StatelessWidget {
-  const _Box({required this.width, required this.height}) : _isCircle = false;
-
-  const _Box.circle(double size)
-    : width = size,
-      height = size,
-      _isCircle = true;
-
-  final double width;
-  final double height;
-  final bool _isCircle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        shape: _isCircle ? BoxShape.circle : BoxShape.rectangle,
-        borderRadius: _isCircle ? null : BorderRadius.circular(AppSpacing.xs),
       ),
     );
   }

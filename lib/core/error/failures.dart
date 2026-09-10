@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:equatable/equatable.dart';
 
 /// Domain-level description of "something went wrong".
@@ -21,38 +22,24 @@ sealed class Failure extends Equatable {
 
 /// Device is offline and no cached data could stand in.
 final class OfflineFailure extends Failure {
-  const OfflineFailure()
-    : super(
-        message:
-            'You appear to be offline and no saved rates are available yet. '
-            'Connect to the internet and try again.',
-      );
+  const OfflineFailure() : super(message: AppStrings.failureOfflineMessage);
 }
 
 /// The request timed out.
 final class TimeoutFailure extends Failure {
-  const TimeoutFailure()
-    : super(message: 'The connection is taking too long. Please try again.');
+  const TimeoutFailure() : super(message: AppStrings.failureTimeoutMessage);
 }
 
 /// Host could not be reached at all.
 final class ConnectionFailure extends Failure {
   const ConnectionFailure()
-    : super(
-        message:
-            'We could not reach the exchange-rate service. '
-            'Check your connection and try again.',
-      );
+    : super(message: AppStrings.failureConnectionMessage);
 }
 
 /// Upstream service is broken (5xx).
 final class ServerFailure extends Failure {
   const ServerFailure({this.statusCode})
-    : super(
-        message:
-            'The exchange-rate service is temporarily unavailable. '
-            'Please try again in a moment.',
-      );
+    : super(message: AppStrings.failureServerMessage);
 
   final int? statusCode;
 
@@ -63,10 +50,7 @@ final class ServerFailure extends Failure {
 /// Request itself was invalid — retrying verbatim will not help.
 final class RequestFailure extends Failure {
   const RequestFailure({this.statusCode})
-    : super(
-        message: 'We could not load the exchange rates for this request.',
-        isRetryable: false,
-      );
+    : super(message: AppStrings.failureRequestMessage, isRetryable: false);
 
   final int? statusCode;
 
@@ -77,35 +61,27 @@ final class RequestFailure extends Failure {
 /// Response shape did not match expectations — a client/server contract bug.
 final class ParsingFailure extends Failure {
   const ParsingFailure()
-    : super(
-        message:
-            'We received an unexpected response and could not read the '
-            'exchange rates.',
-        isRetryable: false,
-      );
+    : super(message: AppStrings.failureParsingMessage, isRetryable: false);
 }
 
 /// The upstream feed simply has no data for the requested window.
 final class NoDataFailure extends Failure {
   const NoDataFailure({String? message})
     : super(
-        message:
-            message ??
-            'No exchange-rate data has been published for this period yet.',
+        message: message ?? AppStrings.failureNoDataMessage,
         isRetryable: false,
       );
 }
 
 /// Local cache read/write blew up.
 final class CacheFailure extends Failure {
-  const CacheFailure()
-    : super(message: 'We could not read the rates saved on this device.');
+  const CacheFailure() : super(message: AppStrings.failureCacheMessage);
 }
 
 /// Catch-all for genuinely unexpected errors.
 final class UnexpectedFailure extends Failure {
   const UnexpectedFailure({this.cause})
-    : super(message: 'Something went wrong. Please try again.');
+    : super(message: AppStrings.failureUnexpectedMessage);
 
   /// The original error. Kept for logging only — never rendered, because an
   /// exception's `toString()` is not user-facing copy.

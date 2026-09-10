@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:intl/intl.dart';
 
 extension DateTimeX on DateTime {
@@ -31,19 +32,16 @@ extension DateTimeX on DateTime {
     final reference = now ?? DateTime.now();
     final delta = reference.difference(this);
 
-    if (delta.inSeconds < 60) return 'just now';
+    if (delta.inSeconds < 60) return AppStrings.justNow;
     if (delta.inMinutes < 60) {
-      return '${delta.inMinutes} ${_plural(delta.inMinutes, 'minute')} ago';
+      return AppStrings.minutesAgo(delta.inMinutes);
     }
     if (delta.inHours < 24) {
-      return '${delta.inHours} ${_plural(delta.inHours, 'hour')} ago';
+      return AppStrings.hoursAgo(delta.inHours);
     }
     if (delta.inDays < 30) {
-      return '${delta.inDays} ${_plural(delta.inDays, 'day')} ago';
+      return AppStrings.daysAgo(delta.inDays);
     }
-    return 'on ${toMediumDate()}';
+    return AppStrings.onDate(toMediumDate());
   }
-
-  static String _plural(int count, String word) =>
-      count == 1 ? word : '${word}s';
 }

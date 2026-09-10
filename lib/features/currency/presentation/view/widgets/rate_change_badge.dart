@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/utils/rate_formatter.dart';
@@ -34,7 +35,7 @@ class RateChangeBadge extends StatelessWidget {
 
     if (absolute == null) {
       return Text(
-        'No change data',
+        AppStrings.noChangeData,
         style: theme.textTheme.labelMedium?.copyWith(
           color: theme.colorScheme.onSurfaceVariant,
         ),
@@ -122,11 +123,11 @@ class RateChangeBadge extends StatelessWidget {
 
   String _semanticsLabel(RateTrend trend, double? percentage) {
     final direction = switch (trend) {
-      RateTrend.egpStronger => 'Egyptian Pound stronger',
-      RateTrend.egpWeaker => 'Egyptian Pound weaker',
-      RateTrend.unchanged => 'Unchanged',
+      RateTrend.egpStronger => AppStrings.egpStronger,
+      RateTrend.egpWeaker => AppStrings.egpWeaker,
+      RateTrend.unchanged => AppStrings.unchanged,
     };
     if (percentage == null) return direction;
-    return '$direction by ${percentage.abs().toStringAsFixed(2)} percent';
+    return AppStrings.trendByPercent(direction, percentage);
   }
 }
