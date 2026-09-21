@@ -1,6 +1,5 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/utils/rate_formatter.dart';
@@ -22,9 +21,10 @@ class RateSummaryCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(
-          context
-              .responsive<double>(compact: AppSpacing.lg, medium: AppSpacing.xl)
-              .r,
+          context.responsive<double>(
+            compact: AppSpacing.lg,
+            medium: AppSpacing.xl,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,8 +78,8 @@ class RateSummaryCard extends StatelessWidget {
             ),
             const Gap(AppSpacing.md),
             Wrap(
-              spacing: AppSpacing.sm.r,
-              runSpacing: AppSpacing.sm.r,
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 RateChangeBadge(rate: rate),
@@ -134,7 +134,7 @@ class RateSummaryMetaRow extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        Icon(icon, size: 18.r, color: theme.colorScheme.onSurfaceVariant),
+        Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant),
         const Gap.horizontal(AppSpacing.sm),
         Expanded(
           child: Text(

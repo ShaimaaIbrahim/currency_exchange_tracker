@@ -1,5 +1,4 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/utils/rate_formatter.dart';
@@ -50,7 +49,7 @@ class RateChangeBadge extends StatelessWidget {
     final content = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(_iconFor(trend), size: isCompact ? 14.r : 16.r, color: color),
+        Icon(_iconFor(trend), size: isCompact ? 14 : 16, color: color),
         const Gap.horizontal(AppSpacing.xxs),
         Flexible(
           child: Text(
@@ -79,13 +78,13 @@ class RateChangeBadge extends StatelessWidget {
           : DecoratedBox(
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(AppSpacing.sm).r,
+                borderRadius: BorderRadius.circular(AppSpacing.sm),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.sm,
                   vertical: AppSpacing.xs,
-                ).r,
+                ),
                 child: content,
               ),
             ),

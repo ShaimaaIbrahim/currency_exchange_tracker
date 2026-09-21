@@ -1,7 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/error/failures.dart';
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +75,7 @@ class AppMessageView extends StatelessWidget {
         // landscape phone instead of overflowing.
         padding: EdgeInsets.symmetric(
           horizontal: context.pagePadding,
-          vertical: AppSpacing.xl.r,
+          vertical: AppSpacing.xl,
         ),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 420),
@@ -85,7 +84,7 @@ class AppMessageView extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: context.responsive<double>(compact: 56, medium: 72).r,
+                size: context.responsive<double>(compact: 56, medium: 72),
                 color: iconColor,
               ),
               const Gap(AppSpacing.lg),

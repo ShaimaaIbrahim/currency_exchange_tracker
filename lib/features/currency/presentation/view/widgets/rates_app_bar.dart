@@ -1,5 +1,4 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/bloc/connectivity/connectivity_cubit.dart';
@@ -19,7 +18,7 @@ class RatesAppBar extends StatelessWidget {
     return SliverAppBar(
       pinned: true,
       // Two-line title (title + subtitle) needs more than the default 56dp.
-      toolbarHeight: 72.r,
+      toolbarHeight: 72,
       titleSpacing: context.pagePadding,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +45,9 @@ class RatesAppBar extends StatelessWidget {
         BlocBuilder<ConnectivityCubit, ConnectivityState>(
           buildWhen: (previous, current) => previous.status != current.status,
           builder: (context, state) => state.isOffline
-              ? Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.sm).r,
-                  child: const OfflineChip(),
+              ? const Padding(
+                  padding: EdgeInsets.only(right: AppSpacing.sm),
+                  child: OfflineChip(),
                 )
               : const SizedBox.shrink(),
         ),
@@ -64,15 +63,15 @@ class RatesAppBar extends StatelessWidget {
                     ),
               tooltip: AppStrings.refreshRatesTooltip,
               icon: state.isRefreshing
-                  ? SizedBox.square(
-                      dimension: 20.r,
-                      child: CircularProgressIndicator(strokeWidth: 2.5.r),
+                  ? const SizedBox.square(
+                      dimension: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2.5),
                     )
                   : const Icon(Icons.refresh_rounded),
             );
           },
         ),
-        SizedBox(width: context.pagePadding - AppSpacing.sm.r),
+        SizedBox(width: context.pagePadding - AppSpacing.sm),
       ],
     );
   }

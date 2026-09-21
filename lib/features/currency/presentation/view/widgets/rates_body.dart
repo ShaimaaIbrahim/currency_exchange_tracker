@@ -1,7 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_scroll_view.dart';
 import 'package:currency_exchange_tracker/core/router/app_router.dart';
@@ -59,7 +58,7 @@ class RatesBody extends StatelessWidget {
           ResponsiveSliverCenter(
             sliver: SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(top: AppSpacing.sm).r,
+                padding: const EdgeInsets.only(top: AppSpacing.sm),
                 child: BlocBuilder<ConnectivityCubit, ConnectivityState>(
                   builder: (context, connectivity) => OfflineNotice(
                     board: board,
@@ -72,7 +71,7 @@ class RatesBody extends StatelessWidget {
         ResponsiveSliverCenter(
           sliver: SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md).r,
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               child: BoardCaption(
                 publishedAt: board.publishedAt,
                 retrievedAt: board.retrievedAt,
@@ -107,7 +106,7 @@ class BoardCaption extends StatelessWidget {
       children: [
         Icon(
           Icons.schedule_rounded,
-          size: 15.r,
+          size: 15,
           color: theme.colorScheme.onSurfaceVariant,
         ),
         const Gap.horizontal(AppSpacing.xs),
@@ -158,11 +157,11 @@ class RatesSliver extends StatelessWidget {
       sliver: SliverGrid.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: columns,
-          mainAxisSpacing: AppSpacing.md.r,
-          crossAxisSpacing: AppSpacing.md.r,
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
           // Tall enough for the stacked card layout that appears when a cell
           // is narrower than ~340dp (typical in a 3-column grid).
-          mainAxisExtent: 160.r,
+          mainAxisExtent: 160,
         ),
         itemCount: rates.length,
         itemBuilder: (context, index) => RateCardTile(rate: rates[index]),
@@ -202,13 +201,13 @@ class RatesSkeletonSliver extends StatelessWidget {
       sliver: SliverToBoxAdapter(
         child: ShimmerGroup(
           child: Padding(
-            padding: const EdgeInsets.only(top: AppSpacing.xl).r,
+            padding: const EdgeInsets.only(top: AppSpacing.xl),
             child: Column(
               children: [
                 for (var index = 0; index < Currency.values.length; index++)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: AppSpacing.md).r,
-                    child: const RateCardSkeleton(),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: AppSpacing.md),
+                    child: RateCardSkeleton(),
                   ),
               ],
             ),

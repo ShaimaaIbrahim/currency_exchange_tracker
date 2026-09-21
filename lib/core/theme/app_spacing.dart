@@ -1,4 +1,3 @@
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:flutter/widgets.dart';
 
@@ -30,12 +29,10 @@ class Gap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Tokens stay design-px; `.r` adapts them at build time so every `Gap`
-    // in the app scales without each call site importing flutter_fluid.
     if (_axis == Axis.horizontal) {
-      return SizedBox(width: size.r);
+      return SizedBox(width: size);
     }
     final scale = context.isShortViewport ? 0.75 : 1.0;
-    return SizedBox(height: size.r * scale);
+    return SizedBox(height: size * scale);
   }
 }

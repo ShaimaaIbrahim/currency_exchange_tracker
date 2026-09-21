@@ -1,5 +1,4 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/widgets/app_state_views.dart';
 import 'package:currency_exchange_tracker/core/widgets/shimmer_box.dart';
@@ -54,7 +53,7 @@ class RateSummaryFallback extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl).r,
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
         child: AppMessageView(
           icon: Icons.info_outline_rounded,
           title: AppStrings.rateUnavailableTitle,
@@ -77,7 +76,7 @@ class RateSummaryCardSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg).r,
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: ShimmerGroup(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

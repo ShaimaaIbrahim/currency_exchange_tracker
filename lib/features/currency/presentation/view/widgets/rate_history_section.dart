@@ -1,5 +1,4 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/widgets/app_state_views.dart';
@@ -26,9 +25,10 @@ class RateHistorySection extends StatelessWidget {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(
-          context
-              .responsive<double>(compact: AppSpacing.lg, medium: AppSpacing.xl)
-              .r,
+          context.responsive<double>(
+            compact: AppSpacing.lg,
+            medium: AppSpacing.xl,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,12 +133,12 @@ class PartialHistoryNote extends StatelessWidget {
 
         final theme = Theme.of(context);
         return Padding(
-          padding: const EdgeInsets.only(top: AppSpacing.md).r,
+          padding: const EdgeInsets.only(top: AppSpacing.md),
           child: Row(
             children: [
               Icon(
                 Icons.info_outline_rounded,
-                size: 15.r,
+                size: 15,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
               const Gap.horizontal(AppSpacing.xs),

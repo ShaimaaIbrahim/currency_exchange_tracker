@@ -1,4 +1,3 @@
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/currency.dart';
 import 'package:flutter/material.dart';
 
@@ -16,11 +15,10 @@ class CurrencyAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final side = size.r;
 
     return Container(
-      width: side,
-      height: side,
+      width: size,
+      height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: colors.surfaceContainerHighest,
@@ -31,7 +29,7 @@ class CurrencyAvatar extends StatelessWidget {
         // Fixed scale: an emoji that grows with the user's text-size setting
         // would burst out of its circle.
         textScaler: TextScaler.noScaling,
-        style: TextStyle(fontSize: side * 0.5),
+        style: TextStyle(fontSize: size * 0.5),
         semanticsLabel: currency.displayName,
       ),
     );

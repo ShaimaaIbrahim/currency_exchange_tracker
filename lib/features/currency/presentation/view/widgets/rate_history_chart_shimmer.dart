@@ -1,4 +1,3 @@
-import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/widgets/shimmer_box.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,7 @@ class RateHistoryChartShimmer extends StatelessWidget {
           const Gap(AppSpacing.md),
           // X-axis labels.
           Padding(
-            padding: EdgeInsets.only(left: 52.r),
+            padding: const EdgeInsets.only(left: 52),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List<Widget>.generate(
@@ -106,7 +105,7 @@ class _SkeletonLinePainter extends CustomPainter {
       Paint()
         ..color = color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.r
+        ..strokeWidth = 3
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round,
     );
