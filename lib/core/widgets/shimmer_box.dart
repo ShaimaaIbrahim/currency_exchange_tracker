@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -49,15 +50,15 @@ class ShimmerBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
+      width: width?.r,
+      height: height.r,
       decoration: BoxDecoration(
         // Any opaque colour works: `Shimmer` paints its gradient over it.
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         shape: shape,
         borderRadius: shape == BoxShape.circle
             ? null
-            : BorderRadius.circular(radius),
+            : BorderRadius.circular(radius.r),
       ),
     );
   }

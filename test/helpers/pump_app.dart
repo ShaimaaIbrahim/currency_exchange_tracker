@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_theme.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/bloc/exchange_rates/exchange_rates_bloc.dart';
@@ -49,11 +50,15 @@ extension PumpApp on WidgetTester {
           size: surfaceSize,
           textScaler: TextScaler.linear(textScale),
         ),
-        child: MaterialApp(
-          theme: AppTheme.light(),
-          home: providers.isEmpty
-              ? widget
-              : MultiBlocProvider(providers: providers, child: widget),
+        child: AppFluid.init(
+          builder: (context, _) {
+            return MaterialApp(
+              theme: AppTheme.light(),
+              home: providers.isEmpty
+                  ? widget
+                  : MultiBlocProvider(providers: providers, child: widget),
+            );
+          },
         ),
       ),
     );

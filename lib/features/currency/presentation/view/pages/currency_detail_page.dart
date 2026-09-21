@@ -1,5 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_scroll_view.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
@@ -39,13 +40,13 @@ class CurrencyDetailPage extends StatelessWidget {
               icon: const Icon(Icons.refresh_rounded),
             ),
           ),
-          SizedBox(width: context.pagePadding - AppSpacing.sm),
+          SizedBox(width: context.pagePadding - AppSpacing.sm.r),
         ],
       ),
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg).r,
           child: ResponsiveCenter(
             maxWidth: AppBreakpoints.maxWideContentWidth,
             child: CurrencyDetailContent(currency: currency),

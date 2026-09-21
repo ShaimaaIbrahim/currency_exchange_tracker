@@ -1,4 +1,5 @@
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 ///
 /// Both are generated from one seed colour so contrast pairs stay consistent,
 /// and every component override lives here rather than being sprinkled across
-/// widgets.
+/// widgets. Call this from inside [FluidInit] so `.r` / `.sp` have metrics.
 abstract final class AppTheme {
   static ThemeData light() => _build(Brightness.light);
 
@@ -27,15 +28,19 @@ abstract final class AppTheme {
       useMaterial3: true,
     );
 
-    return base.copyWith(
+    final iconSize = 24.r;
+    final themed = base.copyWith(
       scaffoldBackgroundColor: colorScheme.surface,
       extensions: [AppSemanticColors.of(brightness)],
+      iconTheme: IconThemeData(size: iconSize),
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         surfaceTintColor: colorScheme.surfaceTint,
         elevation: 0,
         scrolledUnderElevation: 2,
         centerTitle: false,
+        iconTheme: IconThemeData(size: iconSize),
+        actionsIconTheme: IconThemeData(size: iconSize),
         titleTextStyle: base.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w700,
           color: colorScheme.onSurface,
@@ -46,7 +51,7 @@ abstract final class AppTheme {
         margin: EdgeInsets.zero,
         color: colorScheme.surfaceContainerLow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.lg),
+          borderRadius: BorderRadius.circular(AppSpacing.lg).r,
           side: BorderSide(color: colorScheme.outlineVariant),
         ),
       ),
@@ -57,25 +62,36 @@ abstract final class AppTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          // Guarantees an accessible touch target regardless of text scale.
+          // Touch targets stay at least 48dp — scaling them down on a small
+          // phone would fail WCAG 2.5.5 / Material.
           minimumSize: const Size(
             AppBreakpoints.minTouchTarget * 2,
             AppBreakpoints.minTouchTarget,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.md),
+            borderRadius: BorderRadius.circular(AppSpacing.md).r,
           ),
         ),
       ),
-      listTileTheme: const ListTileThemeData(minVerticalPadding: AppSpacing.md),
+      listTileTheme: ListTileThemeData(minVerticalPadding: AppSpacing.md.r),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: BorderRadius.circular(AppSpacing.md).r,
         ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: colorScheme.primary,
+      ),
+    );
+
+    final scaled = ResponsiveTheme.fromTheme(themed);
+    return scaled.copyWith(
+      appBarTheme: scaled.appBarTheme.copyWith(
+        titleTextStyle: scaled.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: colorScheme.onSurface,
+        ),
       ),
     );
   }

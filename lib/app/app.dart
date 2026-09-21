@@ -1,5 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/di/injector.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/router/app_router.dart';
 import 'package:currency_exchange_tracker/core/theme/app_theme.dart';
 import 'package:currency_exchange_tracker/features/currency/presentation/bloc/connectivity/connectivity_cubit.dart';
@@ -35,22 +36,28 @@ class _CurrencyExchangeAppState extends State<CurrencyExchangeApp> {
           create: (_) => sl<ConnectivityCubit>()..start(),
         ),
       ],
-      child: MaterialApp.router(
-        title: AppStrings.appTitle,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.system,
-        routerConfig: _router,
-        builder: (context, child) {
-          // Respect the user's text-size preference, but cap it: past ~1.6×
-          // the numeric layouts stop being readable no matter how they wrap,
-          // and clamping is kinder than clipping.
-          final scaler = MediaQuery.textScalerOf(context)
-              .clamp(minScaleFactor: 0.85, maxScaleFactor: 1.6);
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: scaler),
-            child: child ?? const SizedBox.shrink(),
+      // FluidInit *wraps* MaterialApp so screen metrics exist before the
+      // first Material frame. Putting it inside `builder:` is too late.
+      child: AppFluid.init(
+        builder: (context, _) {
+          return MaterialApp.router(
+            title: AppStrings.appTitle,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light(),
+            darkTheme: AppTheme.dark(),
+            themeMode: ThemeMode.system,
+            routerConfig: _router,
+            builder: (context, child) {
+              // Respect the user's text-size preference, but cap it: past ~1.6×
+              // the numeric layouts stop being readable no matter how they wrap,
+              // and clamping is kinder than clipping.
+              final scaler = MediaQuery.textScalerOf(context)
+                  .clamp(minScaleFactor: 0.85, maxScaleFactor: 1.6);
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: scaler),
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
           );
         },
       ),

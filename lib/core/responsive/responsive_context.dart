@@ -1,4 +1,5 @@
 import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:flutter/widgets.dart';
 
 /// Ergonomic access to layout information from a [BuildContext].
@@ -47,8 +48,12 @@ extension ResponsiveContext on BuildContext {
       };
 
   /// Horizontal page padding that grows with available width.
+  ///
+  /// Size-class picks the *design* token; `.r` then scales that token. The
+  /// 600/1024/1440 breakpoints themselves stay unscaled — they are window
+  /// measurements, not mock-px.
   double get pagePadding =>
-      responsive<double>(compact: 16, medium: 24, expanded: 32);
+      responsive<double>(compact: 16, medium: 24, expanded: 32).r;
 
   /// Number of columns a card grid should use.
   int get gridColumns => responsive<int>(compact: 1, medium: 2, expanded: 3);

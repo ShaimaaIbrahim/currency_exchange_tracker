@@ -1,5 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/features/currency/domain/entities/rates_board.dart';
@@ -29,7 +30,7 @@ class OfflineNotice extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: colors.offlineBackground,
-        borderRadius: BorderRadius.circular(AppSpacing.md),
+        borderRadius: BorderRadius.circular(AppSpacing.md).r,
         border: Border.all(
           color: colors.offlineForeground.withValues(alpha: 0.35),
         ),
@@ -37,13 +38,13 @@ class OfflineNotice extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm + AppSpacing.xxs,
-      ),
+      ).r,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             isOffline ? Icons.wifi_off_rounded : Icons.cloud_off_rounded,
-            size: 18,
+            size: 18.r,
             color: colors.offlineForeground,
           ),
           const Gap.horizontal(AppSpacing.sm),
@@ -96,18 +97,18 @@ class OfflineChip extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: colors.offlineBackground,
-          borderRadius: BorderRadius.circular(AppSpacing.xxl),
+          borderRadius: BorderRadius.circular(AppSpacing.xxl).r,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.sm,
           vertical: AppSpacing.xs,
-        ),
+        ).r,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.wifi_off_rounded,
-              size: 14,
+              size: 14.r,
               color: colors.offlineForeground,
             ),
             const Gap.horizontal(AppSpacing.xs),

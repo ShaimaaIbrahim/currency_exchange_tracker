@@ -1,5 +1,6 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_colors.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
@@ -60,7 +61,7 @@ class RateHistoryChart extends StatelessWidget {
             horizontalInterval: bounds.step,
             getDrawingHorizontalLine: (value) => FlLine(
               color: theme.colorScheme.outlineVariant,
-              strokeWidth: 1,
+              strokeWidth: 1.r,
               dashArray: const [4, 4],
             ),
           ),
@@ -72,17 +73,16 @@ class RateHistoryChart extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 interval: bounds.step,
-                reservedSize: context.responsive<double>(
-                  compact: 52,
-                  medium: 60,
-                ),
+                reservedSize: context
+                    .responsive<double>(compact: 52, medium: 60)
+                    .r,
                 getTitlesWidget: (value, meta) {
                   // Skip the edge labels: they collide with the chart border.
                   if (value <= bounds.min || value >= bounds.max) {
                     return const SizedBox.shrink();
                   }
                   return Padding(
-                    padding: const EdgeInsets.only(right: AppSpacing.sm),
+                    padding: const EdgeInsets.only(right: AppSpacing.sm).r,
                     child: Text(
                       RateFormatter.axisLabel(value),
                       textAlign: TextAlign.right,
@@ -98,7 +98,7 @@ class RateHistoryChart extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 interval: 1,
-                reservedSize: 28,
+                reservedSize: 28.r,
                 getTitlesWidget: (value, meta) {
                   final index = value.round();
                   if (index < 0 || index >= history.points.length) {
@@ -110,7 +110,7 @@ class RateHistoryChart extends StatelessWidget {
                     return const SizedBox.shrink();
                   }
                   return Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.sm),
+                    padding: const EdgeInsets.only(top: AppSpacing.sm).r,
                     child: Text(
                       history.points[index].date.toChartLabel(),
                       style: theme.textTheme.labelSmall?.copyWith(
@@ -125,7 +125,7 @@ class RateHistoryChart extends StatelessWidget {
           lineTouchData: LineTouchData(
             touchTooltipData: LineTouchTooltipData(
               getTooltipColor: (_) => theme.colorScheme.inverseSurface,
-              tooltipBorderRadius: BorderRadius.circular(AppSpacing.sm),
+              tooltipBorderRadius: BorderRadius.circular(AppSpacing.sm).r,
               getTooltipItems: (touchedSpots) => touchedSpots.map((spot) {
                 final point = history.points[spot.x.round()];
                 return LineTooltipItem(
@@ -157,7 +157,7 @@ class RateHistoryChart extends StatelessWidget {
               curveSmoothness: 0.25,
               preventCurveOverShooting: true,
               color: lineColor,
-              barWidth: 3,
+              barWidth: 3.r,
               isStrokeCapRound: true,
               dotData: FlDotData(
                 // Dots only when there is room; seven dots on a narrow phone
@@ -165,9 +165,9 @@ class RateHistoryChart extends StatelessWidget {
                 show: context.isAtLeastMedium || history.points.length <= 7,
                 getDotPainter: (spot, percent, bar, index) =>
                     FlDotCirclePainter(
-                      radius: index == spots.length - 1 ? 5 : 3,
+                      radius: index == spots.length - 1 ? 5.r : 3.r,
                       color: theme.colorScheme.surface,
-                      strokeWidth: 2.5,
+                      strokeWidth: 2.5.r,
                       strokeColor: lineColor,
                     ),
               ),

@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/responsive/app_fluid.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
 import 'package:currency_exchange_tracker/core/utils/rate_formatter.dart';
@@ -30,10 +31,12 @@ class RateCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: EdgeInsets.all(
-            context.responsive<double>(
-              compact: AppSpacing.md,
-              medium: AppSpacing.lg,
-            ),
+            context
+                .responsive<double>(
+                  compact: AppSpacing.md,
+                  medium: AppSpacing.lg,
+                )
+                .r,
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -177,16 +180,15 @@ class RateCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avatarSize = context.responsive<double>(compact: 42, medium: 48);
-    final padding = context.responsive<double>(
-      compact: AppSpacing.md,
-      medium: AppSpacing.lg,
-    );
+    final padding = context
+        .responsive<double>(compact: AppSpacing.md, medium: AppSpacing.lg)
+        .r;
 
     return Card(
       child: Padding(
         padding: EdgeInsets.all(padding),
         child: SizedBox(
-          height: avatarSize,
+          height: avatarSize.r,
           child: Row(
             children: [
               ShimmerBox.circle(size: avatarSize),
