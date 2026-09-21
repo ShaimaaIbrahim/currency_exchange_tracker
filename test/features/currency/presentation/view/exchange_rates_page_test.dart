@@ -275,7 +275,7 @@ void main() {
       expect(find.byType(SliverGrid), findsNothing);
     });
 
-    testWidgets('switches to a grid on a tablet', (tester) async {
+    testWidgets('stays a list on a tablet', (tester) async {
       when(() => ratesBloc.state).thenReturn(
         ExchangeRatesState(
           status: ExchangeRatesStatus.success,
@@ -283,10 +283,9 @@ void main() {
         ),
       );
 
-      // 900dp is `medium` (2 columns). 1024dp is already `expanded` (3).
       await pumpPage(tester, surfaceSize: const Size(900, 1200));
 
-      expect(find.byType(SliverGrid), findsOneWidget);
+      expect(find.byType(SliverGrid), findsNothing);
       expect(find.byType(RateCard), findsOneWidget);
     });
 

@@ -1,7 +1,5 @@
 import 'package:currency_exchange_tracker/core/constants/app_strings.dart';
 import 'package:currency_exchange_tracker/core/extensions/date_time_x.dart';
-import 'package:currency_exchange_tracker/core/responsive/app_breakpoints.dart';
-import 'package:currency_exchange_tracker/core/responsive/responsive_context.dart';
 import 'package:currency_exchange_tracker/core/responsive/responsive_scroll_view.dart';
 import 'package:currency_exchange_tracker/core/router/app_router.dart';
 import 'package:currency_exchange_tracker/core/theme/app_spacing.dart';
@@ -129,10 +127,9 @@ class BoardCaption extends StatelessWidget {
   }
 }
 
-/// The list itself: a single column on phones, a grid once there is room.
-///
-/// Wide screens get columns rather than a stretched list because a 1200dp-wide
-/// row wastes the space *and* makes each row harder to read.
+/// The rate board as a single-column list on every size class, including
+/// tablet. Width is still capped by [ResponsiveSliverCenter] so rows do not
+/// stretch edge to edge.
 class RatesSliver extends StatelessWidget {
   const RatesSliver({required this.rates, super.key});
 
@@ -140,30 +137,10 @@ class RatesSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final columns = context.gridColumns;
-
-    if (columns == 1) {
-      return ResponsiveSliverCenter(
-        sliver: SliverList.separated(
-          itemCount: rates.length,
-          separatorBuilder: (_, _) => const Gap(AppSpacing.md),
-          itemBuilder: (context, index) => RateCardTile(rate: rates[index]),
-        ),
-      );
-    }
-
     return ResponsiveSliverCenter(
-      maxWidth: AppBreakpoints.maxWideContentWidth,
-      sliver: SliverGrid.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columns,
-          mainAxisSpacing: AppSpacing.md,
-          crossAxisSpacing: AppSpacing.md,
-          // Tall enough for the stacked card layout that appears when a cell
-          // is narrower than ~340dp (typical in a 3-column grid).
-          mainAxisExtent: 160,
-        ),
+      sliver: SliverList.separated(
         itemCount: rates.length,
+        separatorBuilder: (_, _) => const Gap(AppSpacing.md),
         itemBuilder: (context, index) => RateCardTile(rate: rates[index]),
       ),
     );
@@ -192,12 +169,7 @@ class RatesSkeletonSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final columns = context.gridColumns;
-
     return ResponsiveSliverCenter(
-      maxWidth: columns == 1
-          ? AppBreakpoints.maxContentWidth
-          : AppBreakpoints.maxWideContentWidth,
       sliver: SliverToBoxAdapter(
         child: ShimmerGroup(
           child: Padding(
